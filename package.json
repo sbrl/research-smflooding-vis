@@ -1,0 +1,37 @@
+{
+  "name": "research-smflooding-vis",
+  "version": "1.0.0",
+  "description": "Visualisations of the main smflooding research for outreach purposes",
+  "main": "src/index.mjs",
+  "private": true,
+  "scripts": {
+    "test": "echo \"No tests have been written yet.\"",
+    "build": "node src/esbuild.mjs",
+    "watch": "ESBUILD_WATCH=yes node src/esbuild.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbrl/research-smflooding-vis.git"
+  },
+  "keywords": [
+    "research",
+    "social",
+    "media",
+    "visualisation",
+    "3d",
+    "interactive"
+  ],
+  "author": "Starbeamrainbowlabs",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/sbrl/research-smflooding-vis/issues"
+  },
+  "homepage": "https://github.com/sbrl/research-smflooding-vis#readme",
+  "dependencies": {
+    "babylonjs": "^6.9.0",
+    "esbuild": "^0.18.6",
+    "pako": "^2.1.0",
+    "pretty-ms": "^8.0.0",
+    "tsv": "^0.2.0"
+  }
+}

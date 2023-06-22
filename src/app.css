@@ -1,0 +1,15 @@
+html, body { font-size: 100%; }
+body {
+	margin: 0; padding: 0;
+	overflow: hidden;
+	font-family: Ubuntu, sans-serif;
+}
+
+html, body, #render-canvas, #canvas-zone {
+	width: 100%;
+	height: 100%;
+}
+
+#render-canvas {
+	touch-action: none;
+}
