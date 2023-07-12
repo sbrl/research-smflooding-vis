@@ -28,8 +28,8 @@
   },
   "homepage": "https://github.com/sbrl/research-smflooding-vis#readme",
   "dependencies": {
-    "babylonjs": "^6.9.0",
-    "esbuild": "^0.18.6",
+    "babylonjs": "^6.11.2",
+    "esbuild": "^0.18.11",
     "pako": "^2.1.0",
     "pretty-ms": "^8.0.0",
     "tsv": "^0.2.0"
