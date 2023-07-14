@@ -17,7 +17,7 @@ class VisualisationManager {
 		this.data_3d = await fetch_umap(this.filepath_umap_3d);
 		this.data_2d = await fetch_umap(this.filepath_umap_2d);
 		
-		// this.collision_3d = new CollisionManager(this);
+		this.collision_3d = new CollisionManager(this);
 		
 		console.log(this.data_3d);
 		

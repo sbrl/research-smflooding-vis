@@ -64,16 +64,16 @@ function umap_point_cloud(engine, manager) {
 	const scene = new BABYLON.Scene(engine);
 	pointer_lock(scene);
 	
-	const camera_fps = make_camera_fps(scene);
+	const camera = make_camera_fps(scene);
 	// const camera = make_camera_orbit(scene);
 	// TODO: investigate switching camera modes between orbit & fps
 	// This attaches the camera to the canvas
-	camera_fps.attachControl(manager.canvas, true);
+	camera.attachControl(manager.canvas, true);
 	
-	// camera.onViewMatrixChangedObservable.add(() => {
-		// const nearest_point = manager.collision_3d.find_looking_point(camera.getForwardRay());
-		// console.log(`DEBUG:babylon/umap_point_cloud nearest_point`, nearest_point);
-	// });
+	camera.onViewMatrixChangedObservable.add(() => {
+		const nearest_point = manager.collision_3d.find_looking_point(camera.getForwardRay());
+		console.log(`DEBUG:babylon/umap_point_cloud nearest_point`, nearest_point);
+	});
 
 	// This creates a light, aiming 0,1,0 - to the sky (non-mesh)
 	const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
@@ -88,9 +88,9 @@ function umap_point_cloud(engine, manager) {
 	point_cloud.buildMeshAsync(); // Would return a mesh if we awaited it
 
 	// Our built-in 'sphere' shape.
-	const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: 0.5, segments: 32 }, scene);
-	sphere.material = new BABYLON.StandardMaterial("sphere material", scene);
-	sphere.material.diffuseColor = new BABYLON.Color3(0.196, 0.172, 0.784);
+	// const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: 0.5, segments: 32 }, scene);
+	// sphere.material = new BABYLON.StandardMaterial("sphere material", scene);
+	// sphere.material.diffuseColor = new BABYLON.Color3(0.196, 0.172, 0.784);
 	// sphere.position.y = 1; // Move the sphere upward 1/2 its height
 	
 	
