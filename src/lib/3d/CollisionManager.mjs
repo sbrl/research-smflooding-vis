@@ -20,7 +20,7 @@ class CollisionManager {
 			ray.origin,
 			ray.direction
 		);
-		
+		// TODO: Try https://doc.babylonjs.com/typedoc/classes/BABYLON.Vector3#Project ?
 		for(const index of nearest) {
 			const item = this.manager.data_3d[index];
 			

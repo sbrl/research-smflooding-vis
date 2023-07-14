@@ -78,8 +78,10 @@ function umap_point_cloud(engine, manager) {
 	// This creates a light, aiming 0,1,0 - to the sky (non-mesh)
 	const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 	light.intensity = 0.7; // Default: 1
-	
-	
+
+
+	// Ref https://doc.babylonjs.com/typedoc/classes/BABYLON.PointsCloudSystem#particles
+	// You can reference particles afterwards - e.g. to change colour, size, etc
 	const point_cloud = new BABYLON.PointsCloudSystem("umap", 1, scene);
 	point_cloud.addPoints(
 		manager.data_3d.length,
