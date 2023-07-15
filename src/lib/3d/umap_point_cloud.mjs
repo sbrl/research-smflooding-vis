@@ -20,7 +20,8 @@ function make_camera_fps(scene) {
 	
 	camera.keysUpward = [32,17];
 	camera.keysDownward = [16];
-	// camera
+	
+	// TODO: Add proper gamepad support ref https://doc.babylonjs.com/features/featuresDeepDive/input/gamepads
 	
 	// This targets the camera to scene origin
 	camera.setTarget(BABYLON.Vector3.Zero());
