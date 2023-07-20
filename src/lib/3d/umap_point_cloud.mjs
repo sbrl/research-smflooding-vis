@@ -4,8 +4,9 @@ import * as BABYLON from 'babylonjs';
 
 import extract from '../io/extract.mjs';
 import cloud_extent from './cloud_extent.mjs';
-
 import pointer_lock from './pointer_lock.mjs';
+import diffuse from './materials/diffuse.mjs';
+import PCSAttenuationMaterialPlugin from './plugins/PCSAttenuationMaterialPlugin.mjs';
 
 function make_camera_fps(scene) {
 	// This creates and positions a free camera (non-mesh)
@@ -79,17 +80,29 @@ function umap_point_cloud(engine, manager) {
 	// This creates a light, aiming 0,1,0 - to the sky (non-mesh)
 	const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 	light.intensity = 0.7; // Default: 1
-
-
+	
+	BABYLON.RegisterMaterialPlugin()
+	
 	// Ref https://doc.babylonjs.com/typedoc/classes/BABYLON.PointsCloudSystem#particles
 	// You can reference particles afterwards - e.g. to change colour, size, etc
-	const point_cloud = new BABYLON.PointsCloudSystem("umap", 1, scene);
+	const point_cloud = new BABYLON.PointsCloudSystem("umap", 2, scene);
 	point_cloud.addPoints(
 		manager.data_3d.length,
-		point_importer(manager.data_3d, 5)
+		point_importer(manager.data_3d, 50)
 	);
 	point_cloud.buildMeshAsync(); // Would return a mesh if we awaited it
-
+	
+	
+	// TODO: Put this above all points closer than X to the player
+	const plane = new BABYLON.MeshBuilder.CreatePlane("plane-text", {
+		width: 10, height: 10
+	});
+	const texture = new BABYLON.DynamicTexture("text", 256, scene);
+	texture.drawText("flooding", null, null, "12px sans-serif");
+	texture.hasAlpha = true;
+	plane.material = diffuse(scene, new BABYLON.Color4(64, 44, 38));
+	plane.material.diffuseTexture = texture;
+	
 	// Our built-in 'sphere' shape.
 	// const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", { diameter: 0.5, segments: 32 }, scene);
 	// sphere.material = new BABYLON.StandardMaterial("sphere material", scene);
