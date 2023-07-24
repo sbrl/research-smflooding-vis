@@ -2,9 +2,14 @@
 
 import * as BABYLON from 'babylonjs';
 
+/**
+ * Size attenuation plugin for PointCloudSystem objects.
+ * @source https://playground.babylonjs.com/#UTHA7W#2
+ * @source https://forum.babylonjs.com/t/point-cloud-system-size-attenuation/31811/5
+ */
 class PCSAttenuationMaterialPlugin extends BABYLON.MaterialPluginBase {
 
-	sizeAttenuation = 1.0;
+	pcsAttenuation = 0.5;
 
 	get isEnabled() {
 		return this._isEnabled;
@@ -22,39 +27,39 @@ class PCSAttenuationMaterialPlugin extends BABYLON.MaterialPluginBase {
 	_isEnabled = false;
 
 	constructor(material) {
-		super(material, "SizeAttenuation", 1000, { "SIZEATTENUATION": false });
+		super(material, "PCSAttenuation", 1000, { "PCSATTENUATION": false });
 	}
 
 	prepareDefines(defines, scene, mesh) {
-		defines.SIZEATTENUATION = this._isEnabled;
+		defines.PCSATTENUATION = this._isEnabled;
 	}
 
 	getUniforms() {
 		return {
 			"ubo": [
-				{ name: "sizeAttenuation", size: 1, type: "float" },
+				{ name: "pcsAttenuation", size: 1, type: "float" },
 			],
 			"vertex":
-				`#ifdef SIZEATTENUATION
-                    uniform float sizeAttenuation;
+				`#ifdef PCSATTENUATION
+                    uniform float pcsAttenuation;
                 #endif`,
 		};
 	}
 
 	bindForSubMesh(uniformBuffer, scene, engine, subMesh) {
 		if (this._isEnabled) {
-			uniformBuffer.updateColor3("sizeAttenuation", this.sizeAttenuation);
+			uniformBuffer.updateColor3("pcsAttenuation", this.pcsAttenuation);
 		}
 	}
 
 	getClassName() {
-		return "SizeAttenuationMaterialPlugin";
+		return "PCSAttenuationMaterialPlugin";
 	}
 
 	getCustomCode(shaderType) {
 		return shaderType === "vertex" ? {
 			"CUSTOM_VERTEX_MAIN_END": `
-                #ifdef SIZEATTENUATION
+                #ifdef PCSATTENUATION
                     gl_PointSize = pointSize * (1. - (gl_Position.z / gl_Position.w * 0.5 + 0.5));
                 #endif
             `,

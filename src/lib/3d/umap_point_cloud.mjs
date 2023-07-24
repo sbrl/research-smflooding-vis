@@ -59,7 +59,7 @@ function point_importer(data_3d, scale_val=1) {
 	};
 }
 
-function umap_point_cloud(engine, manager) {
+async function umap_point_cloud(engine, manager) {
 	// For testing.
 	
 	// This creates a basic Babylon Scene object (non-mesh)
@@ -72,26 +72,29 @@ function umap_point_cloud(engine, manager) {
 	// This attaches the camera to the canvas
 	camera.attachControl(manager.canvas, true);
 	
-	camera.onViewMatrixChangedObservable.add(() => {
-		const nearest_point = manager.collision_3d.find_looking_point(camera.getForwardRay());
-		console.log(`DEBUG:babylon/umap_point_cloud nearest_point`, nearest_point);
-	});
+	// camera.onViewMatrixChangedObservable.add(() => {
+	// 	const nearest_point = manager.collision_3d.find_looking_point(camera.getForwardRay());
+	// 	console.log(`DEBUG:babylon/umap_point_cloud nearest_point`, nearest_point);
+	// });
 
 	// This creates a light, aiming 0,1,0 - to the sky (non-mesh)
 	const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
 	light.intensity = 0.7; // Default: 1
 	
-	BABYLON.RegisterMaterialPlugin()
+	BABYLON.RegisterMaterialPlugin("PCSAttenuation", (material) => {
+		material.pcsAttenuationPlugin = new PCSAttenuationMaterialPlugin(material);
+		return material.colorify;
+	})
 	
 	// Ref https://doc.babylonjs.com/typedoc/classes/BABYLON.PointsCloudSystem#particles
 	// You can reference particles afterwards - e.g. to change colour, size, etc
-	const point_cloud = new BABYLON.PointsCloudSystem("umap", 2, scene);
+	const point_cloud = new BABYLON.PointsCloudSystem("umap", 250, scene);
 	point_cloud.addPoints(
 		manager.data_3d.length,
 		point_importer(manager.data_3d, 50)
 	);
-	point_cloud.buildMeshAsync(); // Would return a mesh if we awaited it
-	
+	await point_cloud.buildMeshAsync(); // Would return a mesh if we awaited it
+	point_cloud.mesh.material.pcsAttenuationPlugin.isEnabled = true;
 	
 	// TODO: Put this above all points closer than X to the player
 	const plane = new BABYLON.MeshBuilder.CreatePlane("plane-text", {

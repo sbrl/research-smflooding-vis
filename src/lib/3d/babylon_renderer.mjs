@@ -34,13 +34,13 @@ function create_engine(canvas) {
 	});
 }
 
-function babylon_renderer(manager) {
+async function babylon_renderer(manager) {
 	engine = create_engine(manager.canvas);
 	if(!engine)
 		throw new Error(`Failed to create Babylon.js engine.`);
 	
 	render_loop(engine, manager.canvas);
-	scene = umap_point_cloud(engine, manager);
+	scene = await umap_point_cloud(engine, manager);
 	
 	setImmediate(() => {
 		current_scene = scene;
