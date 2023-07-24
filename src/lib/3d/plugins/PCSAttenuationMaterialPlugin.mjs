@@ -8,13 +8,13 @@ import * as BABYLON from 'babylonjs';
  * @source https://forum.babylonjs.com/t/point-cloud-system-size-attenuation/31811/5
  */
 class PCSAttenuationMaterialPlugin extends BABYLON.MaterialPluginBase {
-
+	
 	pcsAttenuation = 0.5;
-
+	
 	get isEnabled() {
 		return this._isEnabled;
 	}
-
+	
 	set isEnabled(enabled) {
 		if (this._isEnabled === enabled) {
 			return;
@@ -23,17 +23,17 @@ class PCSAttenuationMaterialPlugin extends BABYLON.MaterialPluginBase {
 		this.markAllDefinesAsDirty();
 		this._enable(this._isEnabled);
 	}
-
+	
 	_isEnabled = false;
-
+	
 	constructor(material) {
 		super(material, "PCSAttenuation", 1000, { "PCSATTENUATION": false });
 	}
-
+	
 	prepareDefines(defines, scene, mesh) {
 		defines.PCSATTENUATION = this._isEnabled;
 	}
-
+	
 	getUniforms() {
 		return {
 			"ubo": [
@@ -45,17 +45,17 @@ class PCSAttenuationMaterialPlugin extends BABYLON.MaterialPluginBase {
                 #endif`,
 		};
 	}
-
+	
 	bindForSubMesh(uniformBuffer, scene, engine, subMesh) {
 		if (this._isEnabled) {
 			uniformBuffer.updateColor3("pcsAttenuation", this.pcsAttenuation);
 		}
 	}
-
+	
 	getClassName() {
 		return "PCSAttenuationMaterialPlugin";
 	}
-
+	
 	getCustomCode(shaderType) {
 		return shaderType === "vertex" ? {
 			"CUSTOM_VERTEX_MAIN_END": `
@@ -66,6 +66,5 @@ class PCSAttenuationMaterialPlugin extends BABYLON.MaterialPluginBase {
 		} : null;
 	}
 }
-
 
 export default PCSAttenuationMaterialPlugin;
