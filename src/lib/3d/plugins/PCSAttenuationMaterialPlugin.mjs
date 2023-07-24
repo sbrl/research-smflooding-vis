@@ -9,7 +9,7 @@ import * as BABYLON from 'babylonjs';
  */
 class PCSAttenuationMaterialPlugin extends BABYLON.MaterialPluginBase {
 	
-	pcsAttenuation = 0.5;
+	pcsAttenuation = 0.1;
 	
 	get isEnabled() {
 		return this._isEnabled;
