@@ -1,6 +1,7 @@
 "use strict";
 
 import * as BABYLON from 'babylonjs';
+import chroma from 'chroma-js';
 
 import extract from '../io/extract.mjs';
 import cloud_extent from './cloud_extent.mjs';
@@ -45,17 +46,28 @@ function make_camera_orbit(scene) {
 	return camera;
 }
 
-function point_importer(data_3d, scale_val=1) {
+function point_importer(data_3d, scale_val=1, colourmap=null) {
+	if(colourmap === null) {
+		colourmap = chroma.scale([ // viridis, a perceptually uniform colourmap
+			"#fde725", "#addc30", "#5ec962",
+			"#28ae80", "#21918c", "#2c728e",
+			"#3b528b", "#472d7b", "#440154"
+		]).mode("lab");
+	}
 	const extent = cloud_extent(data_3d);
 	const range = extent.max.subtract(extent.min);
 	const offset = extent.min
 		.add(range.divide(new BABYLON.Vector3(2, 2, 2)))
-		.multiply(new BABYLON.Vector3(-1, -1, -1));
+		.multiply(new BABYLON.Vector3(-1, -1, -1))
+		.add(new BABYLON.Vector3(1.2, 1.2, 1.2));
 	const scale = new BABYLON.Vector3(scale_val, scale_val, scale_val);
 	return (particle, i, i_group) => {
 		particle.position = (new BABYLON.Vector3(
 			...extract.point(data_3d[i])
 		)).add(offset).multiply(scale);
+		const distance = (particle.position.length()+1) / (scale_val * 7);
+		particle.color = BABYLON.Color4.FromHexString(colourmap(distance).toString("hex"));
+		// console.log(`pos`, particle.position.toString(), `distance`, distance, `colour`, particle.color.toString());
 	};
 }
 
@@ -111,8 +123,6 @@ async function umap_point_cloud(engine, manager) {
 	// sphere.material = new BABYLON.StandardMaterial("sphere material", scene);
 	// sphere.material.diffuseColor = new BABYLON.Color3(0.196, 0.172, 0.784);
 	// sphere.position.y = 1; // Move the sphere upward 1/2 its height
-	
-	
 	
 	// // Our built-in 'ground' shape.
 	// const ground = BABYLON.MeshBuilder.CreateGround("ground", { width: 6, height: 6 }, scene);

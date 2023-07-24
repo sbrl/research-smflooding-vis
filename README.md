@@ -9,7 +9,8 @@ This repository contains some cool visualisations linked to my [social media flo
 
 TODO: Fill this in.
 
-
+## Notes
+- We use perceptually uniform colour schemes to avoid bias.
 
 ## Contributing
 Contributions are welcome - both issues and pull requests! Please mention in your pull request that you release your work under the GPL-3.0 (see below).
