@@ -84,10 +84,11 @@ async function umap_point_cloud(engine, manager) {
 	// This attaches the camera to the canvas
 	camera.attachControl(manager.canvas, true);
 	
-	// camera.onViewMatrixChangedObservable.add(() => {
-	// 	const nearest_point = manager.collision_3d.find_looking_point(camera.getForwardRay());
-	// 	console.log(`DEBUG:babylon/umap_point_cloud nearest_point`, nearest_point);
-	// });
+	camera.onViewMatrixChangedObservable.add(() => {
+		
+		const nearest_point = manager.collision_3d.find_looking_point(camera.getForwardRay());
+		console.log(`DEBUG:babylon/umap_point_cloud nearest_point`, nearest_point);
+	});
 
 	// This creates a light, aiming 0,1,0 - to the sky (non-mesh)
 	const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
