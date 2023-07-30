@@ -28,6 +28,7 @@ class PlaneTextManager {
 		);
 		this.radius = 20;
 		this.min_delay = 100;
+		this.offset = new Vector3(0, 0.3, 0);
 		this.last_update = new Date();
 		
 		this.#init(data_transformed);
@@ -104,18 +105,17 @@ class PlaneTextManager {
 		// console.log(`DEBUG:PlaneTextManager update:END pos ${pos} octree_points ${result.points.length} | planes ${this.planes.size} | create ${create} (${create_skip} skip) | delete ${del}`);
 	}
 	
-	
 	#create(pos, text) {
 		let pos_bab = new BABYLON.Vector3(pos.x, pos.y, pos.z);
 		
 		const name = `plane-text_${++this.next_id}`;
 		const plane = new BABYLON.MeshBuilder.CreatePlane(name, {
-			width: 8, height: 8
+			width: 8, height: 6
 		});
-		plane.position = pos_bab;
+		plane.position = pos_bab.add(this.offset);
 		
 		const texture = new BABYLON.DynamicTexture("text", 256, this.scene);
-		texture.drawText(text, null, null, "12px sans-serif", "");
+		texture.drawText(text, null, null, "12px sans-serif");
 		texture.hasAlpha = true;
 		
 		plane.material = diffuse(this.scene, new BABYLON.Color4(64, 44, 38));
