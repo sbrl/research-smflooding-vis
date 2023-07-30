@@ -20,8 +20,9 @@ export default function cloud_extent(data_3d) {
 		}
 	}
 	
-	return {
+	const result = {
 		min: new BABYLON.Vector3(...point_min),
 		max: new BABYLON.Vector3(...point_max)
 	};
+	return result;
 }

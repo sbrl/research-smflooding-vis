@@ -1,81 +1,140 @@
 "use strict";
 
+import { Vector3 } from 'babylonjs';
 import Octree, { Vec3 } from "octree-es";
 import array_differ from "array-differ";
 
 import extract from '../io/extract.mjs';
+import diffuse from './materials/diffuse.mjs';
+import range from './range.mjs';
 
 class PlaneTextManager {
-	constructor(manager, scene) {
+	constructor(data_transformed, scene) {
 		this.scene = scene;
 		
 		this.planes = new Map();
 		
-		this.points = new Octree(new Vec3(0, 0, 0), new Vec3(250, 250, 250));
-		this.radius = 10;
+		const range_result = range(data_transformed.map(row => row[1]));
+		range_result.min = range_result.min.subtract(new Vector3(10, 10, 10));
+		range_result.max = range_result.max.add(new Vector3(10, 10, 10));
 		
-		this.#init(manager.data_3d);
+		const origin = new Vec3(range_result.min.x, range_result.min.y, range_result.min.z);
+		const size = new Vec3(range_result.max.x, range_result.max.y, range_result.max.z);
 		
+		this.data_transformed = data_transformed;
+		this.points = new Octree(
+			new Vec3(-1000, -1000, -1000), // origin
+			new Vec3(2000, 2000, 2000) // size - we assume that this is NOT a radius-like thing
+		);
+		this.radius = 20;
+		this.min_delay = 100;
+		this.last_update = new Date();
+		
+		this.#init(data_transformed);
+		
+		this.next_id = 0;
 	}
 	
 	#pos_tostring(pos) {
 		return `(${pos.x}, ${pos.y}, ${pos.z})`;
 	}
 	
-	#init(data_3d) {
-		for(const row of data_3d) {
+	#init(data_transformed) {
+		console.log(`DEBUG:PlaneTextManager init:START`);
+		for (const item of data_transformed) {
 			this.points.add(
-				new Vec3(...extract.point(row)),
-				extract.text(row)
+				new Vec3(item[1].x, item[1].y, item[1].z),
+				item[0] // data
 			);
 		}
+		console.log(`DEBUG:PlaneTextManager init:END`);
+	}
+	
+	#findNearbyPoints(pos, radius) {
+		const result = { points: [], data: [] };
+		for(const item of this.data_transformed) {
+			if(Vector3.Distance(pos, item[1]) > radius)
+				continue;
+			
+			result.data.push(item[0]);
+			result.points.push(item[1]);
+		}
+		return result;
+	}
+	
+	#should_update() {
+		const now = new Date();
+		if(now - this.last_update >= this.min_delay) {
+			this.last_update = now;
+			return true;
+		}
+		return false;
 	}
 	
 	update(pos) {
-		const o_pos = new Vec3(pos.x, pos.y, pos.z);
-		const result = this.points.findNearbyPoints(o_pos, this.radius);
+		if(!this.#should_update()) return;
+		// console.log(`DEBUG:PlaneTextManager update:START`);
+		// const pos_oct = new Vec3(pos.x, pos.y, pos.z);
+		// const result = this.points.findNearbyPoints(pos_oct, this.radius);
+		const result = this.#findNearbyPoints(pos, this.radius);
+		// console.log(`DEBUG:PlaneTextManager octree pos`, pos, `radius`, this.radius, `result`, result);
 		const pos_strs_new = result.points.map(point => this.#pos_tostring(point));
+		
+		let create = 0, create_skip = 0, del = 0;
+		
 		for(const i in result.points) {
 			// If it's already drawn, then keep it
-			if(this.planes.has(pos_strs_new[i]))
+			if(this.planes.has(pos_strs_new[i])) {
+				create_skip++;
 				continue;
-			
-			this.#create(pos, result.data[i]);
-			
+			}
+			create++;
+			this.#create(result.points[i], result.data[i]);
+			// console.log(`DEBUG:PlaneTextManager CREATE pos`, result.points[i], `data`, result.data[i]);
 		}
 		
 		// Delete all the planes that are now out of range
 		// TODO: Recycle them instead
-		const to_remove = array_differ(this.planes.keys(), pos_strs_new);
-		for(const pos_str_old of to_remove)
+		const to_remove = array_differ([...this.planes.keys()], pos_strs_new);
+		for(const pos_str_old of to_remove) {
 			this.#delete(pos_str_old);
+			del++;
+		}
+		
+		// console.log(`DEBUG:PlaneTextManager update:END pos ${pos} octree_points ${result.points.length} | planes ${this.planes.size} | create ${create} (${create_skip} skip) | delete ${del}`);
 	}
 	
 	
 	#create(pos, text) {
-		if(pos instanceof Vec3)
-			pos = new BABYLON.Vector3(pos.x, pos.y, pos.z);
+		let pos_bab = new BABYLON.Vector3(pos.x, pos.y, pos.z);
 		
-		const plane = new BABYLON.MeshBuilder.CreatePlane("plane-text", {
+		const name = `plane-text_${++this.next_id}`;
+		const plane = new BABYLON.MeshBuilder.CreatePlane(name, {
 			width: 8, height: 8
 		});
-		plane.position = pos;
+		plane.position = pos_bab;
+		
 		const texture = new BABYLON.DynamicTexture("text", 256, this.scene);
 		texture.drawText(text, null, null, "12px sans-serif", "");
 		texture.hasAlpha = true;
-		plane.material = diffuse(scene, new BABYLON.Color4(64, 44, 38));
+		
+		plane.material = diffuse(this.scene, new BABYLON.Color4(64, 44, 38));
 		plane.material.diffuseTexture = texture;
-		const pos_str = this.#pos_tostring(pos);
+		
+		const pos_str = this.#pos_tostring(pos_bab);
 		this.planes.set(pos_str, {
-			pos,
-			pos_str,
 			plane,
 			texture
 		});
 	}
 	
 	#delete(pos_str) {
+		const item = this.planes.get(pos_str);
+		this.scene.removeTexture(item.texture);
+		this.scene.removeMaterial(item.plane.material);
+		this.scene.removeMesh(item.plane);
 		this.planes.delete(pos_str);
+		// console.log(`DEBUG:PlaneTextManager DELETE at ${pos_str} text ${item.text}`);
 	}
 }
 

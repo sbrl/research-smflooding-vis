@@ -41,6 +41,7 @@ async function babylon_renderer(manager) {
 	
 	render_loop(engine, manager.canvas);
 	scene = await umap_point_cloud(engine, manager);
+	if(!scene) throw new Error(`Error: umap_point_cloud did not return a scene.`);
 	
 	setImmediate(() => {
 		current_scene = scene;
