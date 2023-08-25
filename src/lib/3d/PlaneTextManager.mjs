@@ -8,6 +8,9 @@ import extract from '../io/extract.mjs';
 import diffuse from './materials/diffuse.mjs';
 import range from './range.mjs';
 
+// const BILLBOARDMODE_NONE	= 0;
+const BILLBOARDMODE_ALL		= 7;
+
 class PlaneTextManager {
 	constructor(data_transformed, scene) {
 		this.scene = scene;
@@ -120,6 +123,8 @@ class PlaneTextManager {
 		
 		plane.material = diffuse(this.scene, new BABYLON.Color4(64, 44, 38));
 		plane.material.diffuseTexture = texture;
+		
+		plane.billboardMode = BILLBOARDMODE_ALL;
 		
 		const pos_str = this.#pos_tostring(pos_bab);
 		this.planes.set(pos_str, {
