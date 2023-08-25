@@ -108,6 +108,19 @@ class PlaneTextManager {
 		// console.log(`DEBUG:PlaneTextManager update:END pos ${pos} octree_points ${result.points.length} | planes ${this.planes.size} | create ${create} (${create_skip} skip) | delete ${del}`);
 	}
 	
+	#get_rect_bounds(plane_size, text_width) {
+		const radius_height = 12;
+		const width_padding = 10;
+		
+		// x, y, width, height
+		return [
+			(plane_size/2) - (text_width/2 + width_padding),	// x
+			(plane_size/2) - radius_height,	// y
+			text_width + (width_padding * 2),	// width
+			radius_height * 2,	// height
+		];
+	}
+	
 	#create(pos, text) {
 		let pos_bab = new BABYLON.Vector3(pos.x, pos.y, pos.z);
 		
@@ -118,6 +131,11 @@ class PlaneTextManager {
 		plane.position = pos_bab.add(this.offset);
 		
 		const texture = new BABYLON.DynamicTexture("text", 256, this.scene);
+		const ctx = texture.getContext();
+		ctx.rect(...this.#get_rect_bounds(256, ctx.measureText(text).width));
+		ctx.fillStyle = "white";
+		ctx.fill();
+		ctx.fillStyle = "black";
 		texture.drawText(text, null, null, "12px sans-serif");
 		texture.hasAlpha = true;
 		

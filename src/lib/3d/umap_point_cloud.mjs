@@ -130,14 +130,14 @@ async function umap_point_cloud(engine, manager) {
 	});
 	
 	// TODO: Put this above all points closer than X to the player
-	const plane = new BABYLON.MeshBuilder.CreatePlane("plane-text", {
-		width: 8, height: 8
-	});
-	const texture = new BABYLON.DynamicTexture("text", 256, scene);
-	texture.drawText("flooding", null, null, "12px sans-serif", "#22222");
-	texture.hasAlpha = true;
-	plane.material = diffuse(scene, new BABYLON.Color4(64, 44, 38));
-	plane.material.diffuseTexture = texture;
+	// const plane = new BABYLON.MeshBuilder.CreatePlane("plane-text", {
+	// 	width: 8, height: 8
+	// });
+	// const texture = new BABYLON.DynamicTexture("text", 256, scene);
+	// texture.drawText("flooding", null, null, "12px sans-serif", "#22222");
+	// texture.hasAlpha = true;
+	// plane.material = diffuse(scene, new BABYLON.Color4(64, 44, 38));
+	// plane.material.diffuseTexture = texture;
 	
 	
 	
