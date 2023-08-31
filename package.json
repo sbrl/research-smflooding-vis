@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/sbrl/research-smflooding-vis#readme",
   "dependencies": {
+    "@tensorflow/tfjs-tflite": "^0.0.1-alpha.10",
     "array-differ": "^4.0.0",
     "babylonjs": "^6.9.0",
     "chroma-js": "^2.4.2",
@@ -35,6 +36,7 @@
     "octree-es": "^1.0.0",
     "pako": "^2.1.0",
     "pretty-ms": "^8.0.0",
+    "readablestream-lines": "^1.0.0",
     "tsv": "^0.2.0"
   }
 }
