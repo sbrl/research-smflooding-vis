@@ -31,6 +31,8 @@ class GamepadController extends EventTarget {
 		// Axis changes smaller than this value will not be reported.
 		this.sensitivity = 0.001;
 		
+		this.debug = false;
+		
 		
 		window.addEventListener("gamepadconnected", event => {
 			console.log(`DEBUG:gamepad CONNECT`, event.gamepad);
@@ -55,7 +57,7 @@ class GamepadController extends EventTarget {
 	
 	trigger_axis(gamepad, axis_index, state_now, state_prev) {
 		const axis_name = axis_map.get(axis_index) ?? `UNKNOWN`;
-		console.log(`DEBUG:GamepadController AXIS_CHANGED gamepad`, gamepad.index, `axis`, axis_name, `/`, axis_index, `prev`, state_prev, `now`, state_now);
+		if(this.debug) console.log(`DEBUG:GamepadController AXIS_CHANGED gamepad`, gamepad.index, `axis`, axis_name, `/`, axis_index, `prev`, state_prev, `now`, state_now);
 		this.dispatchEvent(new CustomEvent(`axis_changed`, {
 			detail: {
 				gamepad,
@@ -71,7 +73,7 @@ class GamepadController extends EventTarget {
 		const button_human = button_map.get(button_index) ?? `UNKNOWN`;
 		
 		if(state_prev && !state_now) {
-			console.log(`DEBUG:GamepadController BUTTON_RELEASED gamepad`, gamepad.index, `button`, button_index, typeof button_index, `button_human`, button_human)
+			if (this.debug) console.log(`DEBUG:GamepadController BUTTON_RELEASED gamepad`, gamepad.index, `button`, button_index, typeof button_index, `button_human`, button_human)
 			this.dispatchEvent(new CustomEvent(`button_released`, {
 				detail: {
 					gamepad,
@@ -81,7 +83,7 @@ class GamepadController extends EventTarget {
 			}));
 		}
 		if (!state_prev && state_now) {
-			console.log(`DEBUG:GamepadController BUTTON_PRESSED gamepad`, gamepad.index, `button`, button_index, typeof button_index, `button_human`, button_human)
+			if (this.debug) console.log(`DEBUG:GamepadController BUTTON_PRESSED gamepad`, gamepad.index, `button`, button_index, typeof button_index, `button_human`, button_human)
 			this.dispatchEvent(new CustomEvent(`button_pressed`, {
 				detail: {
 					gamepad,
