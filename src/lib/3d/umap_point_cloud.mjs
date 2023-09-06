@@ -27,9 +27,9 @@ function make_camera_fps(scene) {
 	camera.keysDownward = [16];
 	
 	// Babylon's gamepad input is broken, disable it. There's an error that shows no results on multiple search engines O.o
-	const gamepad = camera.inputs.attached.gamepad;
-	console.log(gamepad)
-	gamepad.detachControl();
+	// const gamepad = camera.inputs.attached.gamepad;
+	// console.log(gamepad)
+	// gamepad.detachControl();
 	
 	// This targets the camera to scene origin
 	camera.setTarget(BABYLON.Vector3.Zero());
@@ -144,8 +144,6 @@ async function umap_point_cloud(engine, manager) {
 	// plane.material = diffuse(scene, new BABYLON.Color4(64, 44, 38));
 	// plane.material.diffuseTexture = texture;
 	
-	
-	const gamepad = new GamepadController();
 	
 	
 	// // Our built-in 'sphere' shape.
