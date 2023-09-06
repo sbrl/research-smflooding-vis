@@ -1,0 +1,22 @@
+diff --git a/node_modules/@babylonjs/core/Gamepads/gamepadManager.js b/node_modules/@babylonjs/core/Gamepads/gamepadManager.js
+index 6a49015..58d79dc 100644
+--- a/node_modules/@babylonjs/core/Gamepads/gamepadManager.js
++++ b/node_modules/@babylonjs/core/Gamepads/gamepadManager.js
+@@ -20,6 +20,8 @@ export class GamepadManager {
+         this._oneGamepadConnected = false;
+         /** @internal */
+         this._isMonitoring = false;
++		
++		this._loggedErrors = [];
+         /**
+          * observable to be triggered when the gamepad controller has been disconnected
+          */
+@@ -90,6 +92,8 @@ export class GamepadManager {
+                 this._startMonitoringGamepads();
+             }
+         }
++
++		this.dispose();
+     }
+     /**
+      * The gamepads in the game pad manager

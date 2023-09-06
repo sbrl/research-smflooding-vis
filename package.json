@@ -5,6 +5,7 @@
   "main": "src/index.mjs",
   "private": true,
   "scripts": {
+    "postinstall": "patch-package",
     "test": "echo \"No tests have been written yet.\"",
     "build": "node src/esbuild.mjs",
     "watch": "ESBUILD_WATCH=yes node src/esbuild.mjs"
@@ -36,6 +37,7 @@
     "joypad.js": "^2.3.5",
     "octree-es": "^1.0.0",
     "pako": "^2.1.0",
+    "patch-package": "^8.0.0",
     "pretty-ms": "^8.0.0",
     "readablestream-lines": "^1.0.0",
     "tsv": "^0.2.0"
