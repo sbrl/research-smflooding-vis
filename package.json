@@ -28,11 +28,12 @@
   },
   "homepage": "https://github.com/sbrl/research-smflooding-vis#readme",
   "dependencies": {
+    "@babylonjs/core": "^6.19.1",
     "@tensorflow/tfjs-tflite": "^0.0.1-alpha.10",
     "array-differ": "^4.0.0",
-    "babylonjs": "^6.9.0",
     "chroma-js": "^2.4.2",
     "esbuild": "^0.18.12",
+    "joypad.js": "^2.3.5",
     "octree-es": "^1.0.0",
     "pako": "^2.1.0",
     "pretty-ms": "^8.0.0",

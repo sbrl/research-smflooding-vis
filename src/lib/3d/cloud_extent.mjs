@@ -1,6 +1,6 @@
 "use strict";
 
-import * as BABYLON from 'babylonjs';
+import { Vector3 } from '@babylonjs/core';
 
 import extract from "../io/extract.mjs";
 
@@ -21,8 +21,8 @@ export default function cloud_extent(data_3d) {
 	}
 	
 	const result = {
-		min: new BABYLON.Vector3(...point_min),
-		max: new BABYLON.Vector3(...point_max)
+		min: new Vector3(...point_min),
+		max: new Vector3(...point_max)
 	};
 	return result;
 }

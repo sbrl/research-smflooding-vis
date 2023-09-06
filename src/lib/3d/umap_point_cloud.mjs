@@ -1,6 +1,6 @@
 "use strict";
 
-import * as BABYLON from 'babylonjs';
+import * as BABYLON from '@babylonjs/core/Legacy/legacy';
 import chroma from 'chroma-js';
 
 import extract, { text } from '../io/extract.mjs';
@@ -9,6 +9,8 @@ import pointer_lock from './pointer_lock.mjs';
 import diffuse from './materials/diffuse.mjs';
 import PCSAttenuationMaterialPlugin from './plugins/PCSAttenuationMaterialPlugin.mjs';
 import PlaneTextManager from './PlaneTextManager.mjs';
+
+import GamepadController from '../input/GamepadController.mjs';
 
 function make_camera_fps(scene) {
 	// This creates and positions a free camera (non-mesh)
@@ -24,7 +26,10 @@ function make_camera_fps(scene) {
 	camera.keysUpward = [32,17];
 	camera.keysDownward = [16];
 	
-	// TODO: Add proper gamepad support ref https://doc.babylonjs.com/features/featuresDeepDive/input/gamepads
+	// Babylon's gamepad input is broken, disable it. There's an error that shows no results on multiple search engines O.o
+	const gamepad = camera.inputs.attached.gamepad;
+	console.log(gamepad)
+	gamepad.detachControl();
 	
 	// This targets the camera to scene origin
 	camera.setTarget(BABYLON.Vector3.Zero());
@@ -140,7 +145,7 @@ async function umap_point_cloud(engine, manager) {
 	// plane.material.diffuseTexture = texture;
 	
 	
-	
+	const gamepad = new GamepadController();
 	
 	
 	// // Our built-in 'sphere' shape.

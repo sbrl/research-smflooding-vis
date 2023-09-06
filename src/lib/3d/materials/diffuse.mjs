@@ -1,6 +1,6 @@
 "use strict";
 
-import { StandardMaterial } from 'babylonjs';
+import { StandardMaterial } from '@babylonjs/core';
 
 let next = 0;
 

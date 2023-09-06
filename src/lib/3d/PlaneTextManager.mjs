@@ -1,6 +1,6 @@
 "use strict";
 
-import { Vector3 } from 'babylonjs';
+import { Vector3 } from '@babylonjs/core';
 import Octree, { Vec3 } from "octree-es";
 import array_differ from "array-differ";
 

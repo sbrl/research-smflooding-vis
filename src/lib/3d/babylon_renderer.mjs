@@ -1,6 +1,6 @@
 "use strict";
 
-import * as BABYLON from 'babylonjs';
+import { Engine } from '@babylonjs/core/Legacy/legacy';
 
 import umap_point_cloud from './umap_point_cloud.mjs';
 
@@ -27,7 +27,7 @@ function render_loop(engine, canvas) {
 }
 
 function create_engine(canvas) {
-	return new BABYLON.Engine(canvas, true, {
+	return new Engine(canvas, true, {
 		preserveDrawingBuffer: true,
 		stencil: true,
 		disableWebGL2Support: false

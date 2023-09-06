@@ -1,13 +1,13 @@
 "use strict";
 
-import * as BABYLON from 'babylonjs';
+import { MaterialPluginBase } from '@babylonjs/core';
 
 /**
  * Size attenuation plugin for PointCloudSystem objects.
  * @source https://playground.babylonjs.com/#UTHA7W#2
  * @source https://forum.babylonjs.com/t/point-cloud-system-size-attenuation/31811/5
  */
-class PCSAttenuationMaterialPlugin extends BABYLON.MaterialPluginBase {
+class PCSAttenuationMaterialPlugin extends MaterialPluginBase {
 	
 	pcsAttenuation = 0.1;
 	

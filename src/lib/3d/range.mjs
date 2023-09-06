@@ -1,6 +1,6 @@
 "use strict";
 
-import { Vector3 } from 'babylonjs';
+import { Vector3 } from '@babylonjs/core';
 
 export default function range(points) {
 	const min = points[0].clone();
