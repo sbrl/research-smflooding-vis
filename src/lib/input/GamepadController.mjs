@@ -56,10 +56,11 @@ class GamepadController extends EventTarget {
 	trigger_axis(gamepad, axis_index, state_now, state_prev) {
 		const axis_name = axis_map.get(axis_index) ?? `UNKNOWN`;
 		console.log(`DEBUG:GamepadController AXIS_CHANGED gamepad`, gamepad.index, `axis`, axis_name, `/`, axis_index, `prev`, state_prev, `now`, state_now);
-		this.dispatchEvent(new Event(`axis_changed`, {
+		this.dispatchEvent(new CustomEvent(`axis_changed`, {
 			detail: {
 				gamepad,
 				axis_index,
+				axis_name,
 				prev: state_prev,
 				now: state_now
 			}
@@ -71,7 +72,7 @@ class GamepadController extends EventTarget {
 		
 		if(state_prev && !state_now) {
 			console.log(`DEBUG:GamepadController BUTTON_RELEASED gamepad`, gamepad.index, `button`, button_index, typeof button_index, `button_human`, button_human)
-			this.dispatchEvent(new Event(`button_released`, {
+			this.dispatchEvent(new CustomEvent(`button_released`, {
 				detail: {
 					gamepad,
 					button_index,
@@ -81,7 +82,7 @@ class GamepadController extends EventTarget {
 		}
 		if (!state_prev && state_now) {
 			console.log(`DEBUG:GamepadController BUTTON_PRESSED gamepad`, gamepad.index, `button`, button_index, typeof button_index, `button_human`, button_human)
-			this.dispatchEvent(new Event(`button_pressed`, {
+			this.dispatchEvent(new CustomEvent(`button_pressed`, {
 				detail: {
 					gamepad,
 					button_index,

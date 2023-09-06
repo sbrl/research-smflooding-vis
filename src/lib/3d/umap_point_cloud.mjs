@@ -11,6 +11,7 @@ import PCSAttenuationMaterialPlugin from './plugins/PCSAttenuationMaterialPlugin
 import PlaneTextManager from './PlaneTextManager.mjs';
 
 import GamepadController from '../input/GamepadController.mjs';
+import FixedBabylonGamepad from './FixedBabylonGamepad.mjs';
 
 function make_camera_fps(scene) {
 	// This creates and positions a free camera (non-mesh)
@@ -106,6 +107,8 @@ async function umap_point_cloud(engine, manager) {
 	// TODO: investigate switching camera modes between orbit & fps
 	// This attaches the camera to the canvas
 	camera.attachControl(manager.canvas, true);
+	
+	const fixedGamepadController = new FixedBabylonGamepad(camera);
 	
 
 	// This creates a light, aiming 0,1,0 - to the sky (non-mesh)
