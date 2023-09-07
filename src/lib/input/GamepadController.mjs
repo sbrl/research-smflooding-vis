@@ -8,6 +8,8 @@ button_map.set(`2`, `button_triangle`);
 button_map.set(`3`, `button_square`);
 button_map.set(`4`, `button_bumper_left`);
 button_map.set(`5`, `button_bumper_right`);
+button_map.set(`8`, `button_share`);
+button_map.set(`9`, `button_options`);
 
 const axis_map = new Map();
 axis_map.set(0, `axis_left_horizontal`);

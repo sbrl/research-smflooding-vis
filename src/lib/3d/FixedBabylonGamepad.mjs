@@ -11,6 +11,7 @@ class FixedBabylonGamepad {
 		
 		this.camera = camera;
 		controller.addEventListener("axis_changed", this.handle_axis_changed.bind(this));
+		controller.addEventListener("button_released", this.handle_button_released.bind(this));
 		
 		this.speed_vectors = {};
 		this.rotation_speed_vectors = {};
@@ -20,6 +21,17 @@ class FixedBabylonGamepad {
 		this.__update_fn();
 		
 		this.last_update = new Date();
+	}
+	
+	handle_button_released(event) {
+		switch(event.detail.button_human) {
+			case "button_bumper_left":
+				console.log(`[GamepadController] button_bumper_left was released, reloading page`);
+				location.reload();
+				break;
+			default:
+				console.log(`[GamepadController] Button released:`, event.detail.button_human);
+		}
 	}
 	
 	handle_axis_changed(event) {

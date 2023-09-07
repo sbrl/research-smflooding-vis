@@ -76,10 +76,15 @@ function transform_data(data_3d, scale_val=1) {
 
 function point_importer(data_transformed, scale_val=1, colourmap=null) {
 	if(colourmap === null) {
-		colourmap = chroma.scale([ // viridis, a perceptually uniform colourmap
-			"#fde725", "#addc30", "#5ec962",
-			"#28ae80", "#21918c", "#2c728e",
-			"#3b528b", "#472d7b", "#440154"
+		// colourmap = chroma.scale([ // viridis, a perceptually uniform colourmap
+		// 	"#fde725", "#addc30", "#5ec962",
+		// 	"#28ae80", "#21918c", "#2c728e",
+		// 	"#3b528b", "#472d7b", "#440154"
+		// ]).mode("lab");
+		colourmap = chroma.scale([ // CET-I2, an isoluminant perceptually uniform colourmap - ref https://colorcet.com/
+			"#70d1ff", "#73d4e9", "#79d6ce",
+			"#85d7b1", "#9cd595", "#bbcf81",
+			"#d9c777", "#f3bd77", "#ffb282"
 		]).mode("lab");
 	}
 	return (particle, i, i_group) => {
@@ -101,6 +106,8 @@ async function umap_point_cloud(engine, manager) {
 	
 	scene.fogMode = BABYLON.Scene.FOGMODE_EXP2;
 	scene.fogDensity = 0.003;
+	scene.ambientColor = scene.clearColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+	// scene.ambientColor = new BABYLON.Color3(0.5, 0.5, 0.5);
 	
 	const camera = make_camera_fps(scene);
 	// const camera = make_camera_orbit(scene);
