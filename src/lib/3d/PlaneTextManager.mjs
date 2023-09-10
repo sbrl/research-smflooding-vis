@@ -32,10 +32,10 @@ class PlaneTextManager {
 		this.radius = 20;
 		this.min_delay = 100;
 		this.offset = new Vector3(0, 0.3, 0);
-		this.last_update = new Date();
 		
 		this.#init(data_transformed);
 		
+		this.last_update = new Date();
 		this.next_id = 0;
 	}
 	
@@ -76,6 +76,7 @@ class PlaneTextManager {
 	}
 	
 	update(pos) {
+		// TODO: Do these calculations in a webworker
 		if(!this.#should_update()) return;
 		// console.log(`DEBUG:PlaneTextManager update:START`);
 		// const pos_oct = new Vec3(pos.x, pos.y, pos.z);
@@ -84,7 +85,8 @@ class PlaneTextManager {
 		// console.log(`DEBUG:PlaneTextManager octree pos`, pos, `radius`, this.radius, `result`, result);
 		const pos_strs_new = result.points.map(point => this.#pos_tostring(point));
 		
-		let create = 0, create_skip = 0, del = 0;
+		let create = 0, create_skip = 0, del = 0, limit_skip = 0;
+		
 		
 		for(const i in result.points) {
 			// If it's already drawn, then keep it
@@ -100,11 +102,13 @@ class PlaneTextManager {
 		// Delete all the planes that are now out of range
 		// TODO: Recycle them instead
 		const to_remove = array_differ([...this.planes.keys()], pos_strs_new);
-		for(const pos_str_old of to_remove) {
+		for (const pos_str_old of to_remove) {
 			this.#delete(pos_str_old);
 			del++;
 		}
+
 		
+		console.log(`DEBUG:PlantTextManager update:END planes ${create} created ${create_skip} pre-exist ${del} delete | ${this.planes.size} total registered`);
 		// console.log(`DEBUG:PlaneTextManager update:END pos ${pos} octree_points ${result.points.length} | planes ${this.planes.size} | create ${create} (${create_skip} skip) | delete ${del}`);
 	}
 	
