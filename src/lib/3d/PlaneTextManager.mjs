@@ -37,6 +37,7 @@ class PlaneTextManager {
 		
 		this.last_update = new Date();
 		this.next_id = 0;
+		this.unused_planes = [];
 	}
 	
 	#pos_tostring(pos) {
@@ -103,12 +104,15 @@ class PlaneTextManager {
 		// TODO: Recycle them instead
 		const to_remove = array_differ([...this.planes.keys()], pos_strs_new);
 		for (const pos_str_old of to_remove) {
-			this.#delete(pos_str_old);
+			// this.#delete(pos_str_old);
+			// console.log(`DEBUG:to_remove KEY`, pos_str_old, `MAP:get`, this.planes.get(pos_str_old));
+			this.#recycle_plane(this.planes.get(pos_str_old).plane);
+			this.planes.delete(pos_str_old);
 			del++;
 		}
 
 		
-		console.log(`DEBUG:PlantTextManager update:END planes ${create} created ${create_skip} pre-exist ${del} delete | ${this.planes.size} total registered`);
+		console.log(`DEBUG:PlantTextManager update:END planes ${create} created ${create_skip} pre-exist ${del} delete | ${this.planes.size} total registered | ${this.unused_planes.length} now unused`);
 		// console.log(`DEBUG:PlaneTextManager update:END pos ${pos} octree_points ${result.points.length} | planes ${this.planes.size} | create ${create} (${create_skip} skip) | delete ${del}`);
 	}
 	
@@ -125,16 +129,39 @@ class PlaneTextManager {
 		];
 	}
 	
-	#create(pos, text) {
-		let pos_bab = new BABYLON.Vector3(pos.x, pos.y, pos.z);
-		
+	#recycle_plane(plane) {
+		console.log(`DEBUG:recycle_plane plane`, plane);
+		plane.setEnabled(false);
+		this.unused_planes.push(plane);
+	}
+	
+	#get_plane() {
+		const next = this.unused_planes.pop();
+		if(next) return { is_recycled: true, plane: next };
+
 		const name = `plane-text_${++this.next_id}`;
 		const plane = new BABYLON.MeshBuilder.CreatePlane(name, {
 			width: 8, height: 6
 		});
+		return { is_recycled: false, plane };
+	}
+	
+	#create(pos, text) {
+		let pos_bab = new BABYLON.Vector3(pos.x, pos.y, pos.z);
+		
+		const { plane, is_recycled } = this.#get_plane();
 		plane.position = pos_bab.add(this.offset);
 		
-		const texture = new BABYLON.DynamicTexture("text", 256, this.scene);
+		let texture
+		if(is_recycled) {
+			texture = plane.material.diffuseTexture;
+		}
+		else {
+			texture = new BABYLON.DynamicTexture("text", 256, this.scene);
+			plane.material = diffuse(this.scene, new BABYLON.Color4(64, 44, 38));
+			plane.material.diffuseTexture = texture;
+		}
+		
 		const ctx = texture.getContext();
 		ctx.rect(...this.#get_rect_bounds(256, ctx.measureText(text).width));
 		ctx.fillStyle = "white";
@@ -143,10 +170,8 @@ class PlaneTextManager {
 		texture.drawText(text, null, null, "12px sans-serif");
 		texture.hasAlpha = true;
 		
-		plane.material = diffuse(this.scene, new BABYLON.Color4(64, 44, 38));
-		plane.material.diffuseTexture = texture;
-		
 		plane.billboardMode = BILLBOARDMODE_ALL;
+		plane.setEnabled(true);
 		
 		const pos_str = this.#pos_tostring(pos_bab);
 		this.planes.set(pos_str, {
