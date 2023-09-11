@@ -1,5 +1,7 @@
 dist/
 *.tflite
+*.gz
+*.txt
 
 # Created by https://www.toptal.com/developers/gitignore/api/node,python,visualstudiocode,git
 # Edit at https://www.toptal.com/developers/gitignore?templates=node,python,visualstudiocode,git
