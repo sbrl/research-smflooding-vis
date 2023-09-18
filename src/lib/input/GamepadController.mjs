@@ -35,6 +35,8 @@ class GamepadController extends EventTarget {
 		
 		this.debug = false;
 		
+		this.continue = true;
+		
 		
 		window.addEventListener("gamepadconnected", event => {
 			console.log(`DEBUG:gamepad CONNECT`, event.gamepad);
@@ -133,6 +135,7 @@ class GamepadController extends EventTarget {
 				else return val;
 			});
 		}
+		return true; // Keep going
 	}
 }
 
@@ -140,8 +143,8 @@ const controller = new GamepadController();
 const update_fn = controller.update.bind(controller);
 
 const do_update = function() {
-	update_fn();
-	requestAnimationFrame(do_update);
+	if(update_fn())
+		requestAnimationFrame(do_update);
 };
 do_update();
 

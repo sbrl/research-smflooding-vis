@@ -53,7 +53,7 @@ async function write_index() {
 	const filepaths = [];
 	const filenames = await fs.promises.readdir(path.join(outdir, `data`));
 	for(const filename of filenames) {
-		if(filename.match(/\.ds\.txt(?:.gz)?$/i))
+		if(filename.match(/\.ds\.tsv(?:.gz)?$/i))
 			filepaths.push(path.join(`./data`, filename));
 	}
 	await fs.promises.writeFile(path.join(outdir, `index.json`), JSON.stringify(filepaths));
@@ -96,7 +96,8 @@ function get_esbuild_context() {
 			".woff": "file",
 			".eot": "file",
 			".ttf": "file",
-			".png": "file"
+			".png": "file",
+			".jpeg": "file"
 		},
 		plugins: [
 			do_html_plugin,
