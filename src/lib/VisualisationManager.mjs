@@ -3,6 +3,7 @@
 import fetch_umap from "./io/fetch_umap.mjs";
 
 import babylon_renderer from "./3d/babylon_renderer.mjs";
+import filepicker from "./domui/filepicker.mjs";
 
 class VisualisationManager {
 	constructor(filepaths_umap) {
@@ -13,7 +14,10 @@ class VisualisationManager {
 	}
 	
 	async init() {
-		this.data = await fetch_umap(this.filepaths_umap[0]);
+		const target_filepath = await filepicker(this.filepaths_umap);
+		
+		this.data = await fetch_umap(target_filepath);
+		// this.data = await fetch_umap(this.filepaths_umap[0]);
 		// this.data = await fetch_umap(this.filepath_umap_2d);
 		
 		
