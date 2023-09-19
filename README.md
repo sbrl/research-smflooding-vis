@@ -86,6 +86,9 @@ Note that there is **no header** to the TSV file. Generation of these files can 
 ## Notes
 - We use perceptually uniform colour schemes to avoid bias. Further reading: <https://colorcet.com/>
 
+## Known issues
+- Gamepad support may work only with a PS4 controller. [Babylon.js](https://babylonjs.com/)' gamepad support is horribly broken, resulting in the need to apply [a patch](https://github.com/sbrl/research-smflooding-vis/blob/c526f463393cd41802d948aca5e89b97bf058167/patches/%40babylonjs%2Bcore%2B6.19.1.patch) to disable it and use a custom hacked-together version instead. Believe it or not, I tried 3 other dedicated libraries and none of those worked either....! Then I was running out of time, so I ended up with this workaround.
+
 ## Contributing
 Contributions are welcome - both issues and pull requests! Please mention in your pull request that you release your work under the GPL-3.0 (see below).
 
