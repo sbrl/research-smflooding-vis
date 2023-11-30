@@ -39,15 +39,15 @@ class FixedBabylonGamepad {
 		const { now, axis_name } = event.detail;
 		
 		switch (event.detail.axis_name) {
-			case `axis_left_horizontal`:
+			case `axis_right_horizontal`:
 				const rotationLeftRight = (new Vector2(0, 1)).scale(now * this.rotation_speed);
 				this.rotation_speed_vectors[axis_name] = [rotationLeftRight, +new Date()];
 				break;
-			case `axis_left_vertical`:
+			case `axis_right_vertical`:
 				const rotationUpDown = (new Vector2(1, 0)).scale(now * this.rotation_speed);
 				this.rotation_speed_vectors[axis_name] = [rotationUpDown, +new Date()];
 				break;
-			case `axis_right_vertical`:
+			case `axis_left_vertical`:
 				const move_by_prescale = this.camera.getDirection(Vector3.Backward());
 				const move_by = move_by_prescale.scale(this.speed * now);
 
@@ -57,7 +57,7 @@ class FixedBabylonGamepad {
 					this.speed_vectors[axis_name] = [move_by, +new Date()];
 
 				break;
-			case `axis_right_horizontal`:
+			case `axis_left_horizontal`:
 				const move_by_lr_prescale = this.camera.getDirection(Vector3.Right());
 				const move_by_lr = move_by_lr_prescale.scale(this.speed * now);
 				
