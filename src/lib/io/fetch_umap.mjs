@@ -3,10 +3,13 @@
 import pako from 'pako';
 import { TSV } from 'tsv';
 
-import Futility from 'futility';
+// import Futility from 'futility';
+import BadWordsNext from 'bad-words-next';
+import en from 'bad-words-next/data/en.json';
 
-console.log(`DEBUG Futility`, Futility);
-const word_detector = new Futility.default();
+// console.log(`DEBUG Futility`, Futility);
+// const word_detector = new Futility.default();
+const word_detector = new BadWordsNext({ data: en });
 
 const DO_FILTER = true;
 
@@ -25,7 +28,8 @@ async function fetch_umap(source_url) {
 	]);
 	if(DO_FILTER) {
 		const count_before_filter = result.length;
-		result = result.filter(row => !word_detector.test(row[0]));
+		// result = result.filter(row => !word_detector.test(row[0]));
+		result = result.filter(row => !word_detector.check(row[0]));
 		const count_after_filter = result.length;
 		const count_filtered = count_before_filter - count_after_filter;
 		console.log(`[fetch_umap:FILTER] Filter active | ${count_before_filter} → ${count_after_filter}; filtered out ${count_filtered} rude words (${((count_filtered/count_before_filter)*100).toFixed(2)}%)`);

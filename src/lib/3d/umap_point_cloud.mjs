@@ -130,7 +130,7 @@ async function umap_point_cloud(engine, manager) {
 	// Ref https://doc.babylonjs.com/typedoc/classes/BABYLON.PointsCloudSystem#particles
 	// You can reference particles afterwards - e.g. to change colour, size, etc
 	const point_cloud = new BABYLON.PointsCloudSystem("umap", 200, scene);
-	const data_transformed = transform_data(manager.data_3d, scale);
+	const data_transformed = transform_data(manager.data, scale);
 	point_cloud.addPoints(
 		data_transformed.length,
 		point_importer(data_transformed, scale)

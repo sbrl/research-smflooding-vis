@@ -5,11 +5,25 @@
 		<title>research-smflooding • visualisation</title>
 	</head>
 	<body>
-		<div id="canvas-zone"><canvas id="render-canvas"></canvas></div>
+		<!-- Source code: https://github.com/sbrl/research-smflooding -->
+		<div id="canvas-zone"><canvas id="render-canvas" class="gone"></canvas></div>
+		<canvas id="attraction-canvas"></canvas>
+		
+		<dialog id="dialog-filepicker">
+			<h2>Select file</h2>
+			<select id="filepicker-select-file" autofocus size="10"></select>
+			<button id="filepicker-button-load">Load</button>
+		</dialog>
+		
+		<div class="static">
+			<a href="github.com/sbrl/research-smflooding-vis">
+				<img alt="Check out my source code on GitHub!" class="icon-large" src="./github.svg" />
+			</a>
+		</div>
 		
 		<!---------------->
-		<link rel="stylesheet" href="/app.css?hash={CSS_HASH_SHORT}" integrity="{ALGO}-{CSS_HASH}" />
-		<script src="/app.js?hash={JS_HASH_SHORT}" integrity="{ALGO}-{JS_HASH}" charset="utf-8"></script>
+		<link rel="stylesheet" href="./app.css?hash={CSS_HASH_SHORT}" integrity="{ALGO}-{CSS_HASH}" />
+		<script src="./app.js?hash={JS_HASH_SHORT}" integrity="{ALGO}-{JS_HASH}" charset="utf-8"></script>
 
 	</body>
 </html>

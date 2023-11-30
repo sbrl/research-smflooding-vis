@@ -49,11 +49,31 @@ async function do_html() {
 	await fs.promises.writeFile(path.join(outdir, "index.html"), html);
 }
 
+async function write_index() {
+	const filepaths = [];
+	const filenames = await fs.promises.readdir(path.join(outdir, `data`));
+	for(const filename of filenames) {
+		if(filename.match(/\.ds\.tsv(?:.gz)?$/i))
+			filepaths.push(path.join(`./data`, filename));
+	}
+	await fs.promises.writeFile(path.join(outdir, `index.json`), JSON.stringify(filepaths));
+	l.log(`Written index with ${filepaths.length} items —→ ${path.join(outdir, `index.json`)}`);
+}
+
 const do_html_plugin = {
 	name: "do_html",
 	setup(build) {
 		build.onEnd(async result => {
 			await do_html();
+		})
+	}
+}
+
+const do_data_index_plugin = {
+	name: "do_data_index",
+	setup(build) {
+		build.onEnd(async result => {
+			await write_index();
 		})
 	}
 }
@@ -76,10 +96,12 @@ function get_esbuild_context() {
 			".woff": "file",
 			".eot": "file",
 			".ttf": "file",
-			".png": "file"
+			".png": "file",
+			".jpeg": "file"
 		},
 		plugins: [
-			do_html_plugin
+			do_html_plugin,
+			do_data_index_plugin
 		]
 	};
 }
@@ -100,6 +122,7 @@ function get_esbuild_context() {
 		// "./img/logo-16.png",
 		// "./img/logo-180.png",
 		// "./img/logo-256.png"
+		"./img/github.svg"
 	].map(filepath => path.resolve(__dirname, filepath));
 	
 	// Always do at least one build first
