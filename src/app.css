@@ -64,3 +64,13 @@ button {
 .gone {
 	display: none;
 }
+
+
+.static {
+	position: fixed; top: 0; right: 0;
+}
+
+.icon-large {
+	max-width: 1.5em;
+	max-height: 1.5em;
+}

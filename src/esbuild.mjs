@@ -122,6 +122,7 @@ function get_esbuild_context() {
 		// "./img/logo-16.png",
 		// "./img/logo-180.png",
 		// "./img/logo-256.png"
+		"./img/github.svg"
 	].map(filepath => path.resolve(__dirname, filepath));
 	
 	// Always do at least one build first
