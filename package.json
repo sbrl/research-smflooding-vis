@@ -8,7 +8,8 @@
     "postinstall": "patch-package",
     "test": "echo \"No tests have been written yet.\"",
     "build": "node src/esbuild.mjs",
-    "watch": "ESBUILD_WATCH=yes node src/esbuild.mjs"
+    "watch": "ESBUILD_WATCH=yes node src/esbuild.mjs",
+	"serve": "npx serve dist"
   },
   "repository": {
     "type": "git",

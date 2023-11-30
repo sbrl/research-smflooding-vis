@@ -60,17 +60,29 @@ button {
 	font-size: 125%;
 }
 
-
-.gone {
-	display: none;
+a {
+	color: white;
+	font-weight: bold;
+	text-decoration: none;
+	cursor: pointer;
+	transition: color 0.2s;
 }
+a:link { color: white; } /* Unvisited only */
+a:visited { color: #88d; }
+a:hover { color: #ddd; }
+a:active { color: #d88; }
 
 
 .static {
 	position: fixed; top: 0; right: 0;
+	z-index: 1000;
+	margin: min(1em, 5%) min(1em, 5%) 0 0;
 }
 
+.gone { display: none; }
+.invert { filter: invert(100%); }
 .icon-large {
 	max-width: 1.5em;
 	max-height: 1.5em;
+	vertical-align: middle;
 }
