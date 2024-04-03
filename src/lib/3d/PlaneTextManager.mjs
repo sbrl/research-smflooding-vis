@@ -163,6 +163,7 @@ class PlaneTextManager {
 		}
 		
 		const ctx = texture.getContext();
+		texture.width = texture.width;
 		ctx.rect(...this.#get_rect_bounds(256, ctx.measureText(text).width));
 		ctx.fillStyle = "white";
 		ctx.fill();
