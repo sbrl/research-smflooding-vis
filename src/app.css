@@ -86,3 +86,7 @@ a:active { color: #d88; }
 	max-height: 1.5em;
 	vertical-align: middle;
 }
+
+.loading {
+	cursor: wait;
+}
