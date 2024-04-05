@@ -14,9 +14,13 @@ button_map.set(`9`, `button_options`);
 const axis_map = new Map();
 axis_map.set(0, `axis_left_horizontal`);
 axis_map.set(1, `axis_left_vertical`);
-axis_map.set(2, `bumper_left`);
-axis_map.set(3, `axis_right_horizontal`);
-axis_map.set(4, `axis_right_vertical`);
+// axis_map.set(2, `bumper_left`);
+// axis_map.set(2, `axis_right_vertical`);
+// axis_map.set(3, `axis_right_horizontal`);
+axis_map.set(3, `axis_right_vertical`);
+axis_map.set(2, `axis_right_horizontal`);
+// axis_map.set(4, `axis_right_vertical`);
+axis_map.set(4, `bumper_left`);
 axis_map.set(5, `bumper_right`);
 axis_map.set(6, `dpad_horizontal`);
 axis_map.set(7, `dpad_vertical`);
@@ -33,7 +37,7 @@ class GamepadController extends EventTarget {
 		// Axis changes smaller than this value will not be reported.
 		this.sensitivity = 0.001;
 		
-		this.debug = false;
+		this.debug = true;
 		
 		this.continue = true;
 		
