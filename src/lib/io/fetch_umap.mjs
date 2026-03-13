@@ -3,7 +3,7 @@
 import pako from 'pako';
 import { TSV } from 'tsv';
 
-// import Futility from 'futility'; // doesn't contain a list of bad words!
+// import Futility from 'futility'; // doesn't contain a list of bad words! use bad-words-next instead, as it catches /most/ but not all....
 import BadWordsNext from 'bad-words-next';
 import en from 'bad-words-next/data/en.json';
 
@@ -11,6 +11,7 @@ import en from 'bad-words-next/data/en.json';
 // const word_detector = new Futility.default();
 const word_detector = new BadWordsNext({ data: en });
 
+// TODO make a UI element for this
 const DO_FILTER = true;
 
 async function fetch_umap(source_url) {
