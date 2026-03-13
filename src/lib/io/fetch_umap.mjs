@@ -3,7 +3,7 @@
 import pako from 'pako';
 import { TSV } from 'tsv';
 
-// import Futility from 'futility';
+// import Futility from 'futility'; // doesn't contain a list of bad words!
 import BadWordsNext from 'bad-words-next';
 import en from 'bad-words-next/data/en.json';
 
